@@ -1,0 +1,11 @@
+.linkContainer {
+  @apply flex cursor-pointer items-center gap-3 rounded-lg text-[12px] font-normal leading-5 transition-colors;
+}
+
+.unactiveList {
+  @apply hover:text-gray-500;
+}
+
+.activeList {
+  @apply font-[600];
+}
