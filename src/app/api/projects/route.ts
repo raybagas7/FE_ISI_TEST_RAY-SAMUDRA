@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { eq } from 'drizzle-orm';
+import { and, asc, desc, eq, ilike, isNull, sql } from 'drizzle-orm';
 import { db } from '@/lib/db/db';
 import { auth } from '@/lib/auth';
 import { projects } from '@/lib/db/schema';
@@ -22,84 +22,72 @@ export async function isLeader(req: NextRequest) {
   return session;
 }
 
-// Create a new project
-export async function POST(req: NextRequest) {
-  const sessionOrResponse = await isLeader(req);
-
-  if (sessionOrResponse instanceof NextResponse) {
-    return sessionOrResponse;
-  }
-  const session = sessionOrResponse;
-
-  const { title, description } = await req.json();
-  const newProject = await db
-    .insert(projects)
-    .values({
-      id: crypto.randomUUID(),
-      title,
-      description,
-      createdBy: session.user.id,
-    })
-    .returning();
-
-  return NextResponse.json(newProject);
-}
-
 // Get project details with tasks
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const projectId = searchParams.get('id');
-  if (!projectId) {
-    return NextResponse.json({ error: 'Project ID required' }, { status: 400 });
+export const GET = async (req: NextRequest) => {
+  try {
+    const session = await auth();
+    if (!session)
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const userRole = session.user.role; // Assuming role is stored in session
+    const { searchParams } = new URL(req.url);
+
+    // Pagination
+    const page = parseInt(searchParams.get('page') || '1', 10);
+    const limit = parseInt(searchParams.get('limit') || '10', 10);
+    const offset = (page - 1) * limit;
+
+    // Sorting
+    const sortField =
+      searchParams.get('sort') === 'updatedAt'
+        ? projects.updatedAt
+        : projects.createdAt;
+    const sortOrder =
+      searchParams.get('order') === 'asc' ? asc(sortField) : desc(sortField);
+
+    // Search by title (case-insensitive)
+    const search = searchParams.get('search');
+
+    // Query conditions
+    const conditions = [];
+    if (search) conditions.push(ilike(projects.title, `%${search}%`));
+
+    // Soft delete handling
+    if (userRole !== 'LEAD') {
+      conditions.push(isNull(projects.deletedAt)); // TEAM can't see deleted projects
+    }
+
+    const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+
+    // Fetch projects
+    const projectList = await db
+      .select()
+      .from(projects)
+      .where(whereClause)
+      .orderBy(sortOrder)
+      .limit(limit)
+      .offset(offset);
+
+    // Get total count for pagination
+    const totalCount = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(projects)
+      .where(whereClause);
+
+    return NextResponse.json({
+      projects: projectList,
+      pagination: {
+        total: totalCount[0].count,
+        page,
+        limit,
+        hasMore: offset + limit < totalCount[0].count,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
-
-  const project = await db.query.projects.findFirst({
-    where: (project, { eq }) => eq(project.id, projectId),
-    with: {
-      tasks: true,
-    },
-  });
-
-  if (!project) {
-    return NextResponse.json({ error: 'Project not found' }, { status: 404 });
-  }
-
-  return NextResponse.json(project);
-}
-
-// Update a project
-export async function PUT(req: NextRequest) {
-  const session = await isLeader(req);
-  if (!session) return;
-
-  const { id, title, description } = await req.json();
-  if (!id) {
-    return NextResponse.json({ error: 'Project ID required' }, { status: 400 });
-  }
-
-  const updatedProject = await db
-    .update(projects)
-    .set({ title, description, updatedAt: new Date() })
-    .where(eq(projects.id, id))
-    .returning();
-
-  return NextResponse.json(updatedProject);
-}
-
-// Delete a project (soft delete by setting deletedAt)
-export async function DELETE(req: NextRequest) {
-  const session = await isLeader(req);
-  if (!session) return;
-
-  const { id } = await req.json();
-  if (!id) {
-    return NextResponse.json({ error: 'Project ID required' }, { status: 400 });
-  }
-
-  await db
-    .update(projects)
-    .set({ deletedAt: new Date() })
-    .where(eq(projects.id, id));
-
-  return NextResponse.json({ message: 'Project deleted' });
-}
+};

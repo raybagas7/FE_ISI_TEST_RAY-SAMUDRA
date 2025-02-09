@@ -1,15 +1,15 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import ListNavigation from './ListNavigation/ListNavigation';
 import MobileSideBar from './MobileSideBar';
 import { GrProjects } from 'react-icons/gr';
 import { RiApps2AddFill } from 'react-icons/ri';
 import { usePathname } from 'next/navigation';
-import path from 'path';
+import { RiLogoutBoxLine } from 'react-icons/ri';
+import { signOut } from 'next-auth/react';
 
 const MainNavigation = (): React.ReactNode => {
   const pathname = usePathname();
-  console.log(pathname);
 
   return (
     <>
@@ -36,6 +36,14 @@ const MainNavigation = (): React.ReactNode => {
                   to="/project/create"
                   icon={<RiApps2AddFill />}
                   isActive={pathname === '/project/create'}
+                />
+                <ListNavigation
+                  name="Logout"
+                  to="/"
+                  icon={<RiLogoutBoxLine />}
+                  onClick={() => {
+                    signOut();
+                  }}
                 />
               </ul>
             </nav>

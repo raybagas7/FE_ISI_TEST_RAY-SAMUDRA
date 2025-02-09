@@ -1,137 +1,81 @@
 'use client';
 
+import { useRef } from 'react';
 import { signIn } from 'next-auth/react';
-// import { signIn } from '@/lib/auth';
-import { useState } from 'react';
+import Input from '@/components/ui/input';
+import React from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import Card from '@/components/ui/card';
 
-export default function Login() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+const AuthForm = () => {
+  const loginRef = useRef<{ email?: string; password?: string }>({});
+  const router = useRouter();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-  };
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setError('');
-    setSuccess('');
-
-    try {
-      const response = await fetch('/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+  // Login Mutation
+  const loginMutation = useMutation({
+    mutationFn: async () => {
+      const result = await signIn('credentials', {
+        email: loginRef.current.email,
+        password: loginRef.current.password,
+        redirect: false, // Disable automatic redirection
       });
 
-      if (!response.ok) {
-        const data = await response.json();
-        setError(data.error || 'Something went wrong');
-        return;
+      if (result?.error) {
+        throw new Error(result.error);
       }
 
-      setSuccess('Account created successfully! 🎉');
-      setFormData({ name: '', email: '', password: '' });
-    } catch (err) {
-      setError('Failed to register. Please try again.');
-    }
-  };
-
-  const handleSubmitLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-
-    const result = await signIn('credentials', {
-      email: formData.get('email'),
-      password: formData.get('password'),
-      redirect: true,
-      callbackUrl: '/home',
-    });
-
-    console.log(result);
-  };
+      return result;
+    },
+    onSuccess: () => {
+      router.replace('/home');
+    },
+    onError: (error) => {
+      console.error('Login failed:', error.message);
+    },
+  });
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-6">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-sm p-4 shadow-md rounded-lg"
-      >
-        <h2 className="text-xl font-bold mb-4 text-center">Sign Up</h2>
-
-        <div className="flex flex-col gap-3">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium">
-              Name
-            </label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="John Doe"
-              className="mt-1 p-2 w-full border rounded-md"
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium">
-              Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="john@example.com"
-              className="mt-1 p-2 w-full border rounded-md"
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium">
-              Password
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="••••••••"
-              className="mt-1 p-2 w-full border rounded-md"
-              required
-            />
-          </div>
-
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-          {success && <p className="text-green-500 text-sm">{success}</p>}
-
+    <main className="flex min-h-screen items-center justify-center bg-primary p-6">
+      <Card title="Sign In">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            loginMutation.mutate();
+          }}
+          className="flex flex-col gap-4"
+        >
+          <Input
+            label="email"
+            placeholder="Email"
+            onChange={(e) => (loginRef.current.email = e.target.value)}
+          />
+          <Input
+            label="password"
+            type="password"
+            placeholder="Password"
+            onChange={(e) => (loginRef.current.password = e.target.value)}
+          />
+          {loginMutation.isError && (
+            <p className="text-sm text-red-500 text-center">
+              Invalid Credential
+            </p>
+          )}
           <button
             type="submit"
-            className="mt-2 bg-black text-white py-2 px-4 rounded-md"
+            className="p-2 bg-secondary text-primary rounded-md hover:opacity-80 transition"
+            disabled={loginMutation.isPending}
           >
-            Sign Up
+            {loginMutation.isPending ? 'Signing In...' : 'Sign In'}
           </button>
+        </form>
+        <div className="mt-4 flex justify-end">
+          <Link href={'/signup'}>Create New Account</Link>
         </div>
-      </form>
-
-      <form onSubmit={handleSubmitLogin}>
-        <input type="email" name="email" required />
-        <input type="password" name="password" required />
-        <button type="submit">Sign In</button>
-      </form>
+      </Card>
     </main>
   );
-}
+};
+
+export default AuthForm;

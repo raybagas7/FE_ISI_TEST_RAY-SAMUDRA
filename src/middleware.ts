@@ -6,15 +6,15 @@ export const middleware = async (req: NextRequest) => {
   console.log('session', session); // Debugging: Check the session object
 
   const currentPath = req.nextUrl.pathname;
-  const loginPath = '/';
+  const loginPaths = ['/', '/signup'];
 
   if (session) {
-    if (currentPath === loginPath) {
+    if (loginPaths.includes(currentPath)) {
       return NextResponse.redirect(new URL('/home', req.url));
     }
   } else {
-    if (currentPath !== loginPath) {
-      return NextResponse.redirect(new URL(loginPath, req.url));
+    if (!loginPaths.includes(currentPath)) {
+      return NextResponse.redirect(new URL('/', req.url));
     }
   }
 
@@ -22,5 +22,5 @@ export const middleware = async (req: NextRequest) => {
 };
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'], 
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };
