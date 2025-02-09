@@ -3,7 +3,7 @@ import Credentials from 'next-auth/providers/credentials';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import { Adapter } from 'next-auth/adapters';
 import { db } from './db/db';
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 
 export const authOptions: NextAuthConfig = {
   adapter: DrizzleAdapter(db) as Adapter,
@@ -27,7 +27,7 @@ export const authOptions: NextAuthConfig = {
         // 3. Verify password
         if (
           user &&
-          bcrypt.compareSync(credentials.password as string, user.password)
+          bcryptjs.compareSync(credentials.password as string, user.password)
         ) {
           return {
             id: user.id,

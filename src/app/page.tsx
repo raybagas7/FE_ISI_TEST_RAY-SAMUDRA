@@ -1,5 +1,6 @@
 'use client';
 
+import { signIn } from 'next-auth/react';
 // import { signIn } from '@/lib/auth';
 import { useState } from 'react';
 
@@ -16,34 +17,34 @@ export default function Login() {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-  // const handleSubmitLogin = async (event: React.FormEvent) => {
-  //   event.preventDefault();
-  //   setError('');
-  //   setSuccess('');
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setError('');
+    setSuccess('');
 
-  //   try {
-  //     const response = await fetch('/api/register', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(formData),
-  //     });
+    try {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-  //     if (!response.ok) {
-  //       const data = await response.json();
-  //       setError(data.error || 'Something went wrong');
-  //       return;
-  //     }
+      if (!response.ok) {
+        const data = await response.json();
+        setError(data.error || 'Something went wrong');
+        return;
+      }
 
-  //     setSuccess('Account created successfully! 🎉');
-  //     setFormData({ name: '', email: '', password: '' });
-  //   } catch (err) {
-  //     setError('Failed to register. Please try again.');
-  //   }
-  // };
+      setSuccess('Account created successfully! 🎉');
+      setFormData({ name: '', email: '', password: '' });
+    } catch (err) {
+      setError('Failed to register. Please try again.');
+    }
+  };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
@@ -51,8 +52,10 @@ export default function Login() {
       email: formData.get('email'),
       password: formData.get('password'),
       redirect: true,
-      callbackUrl: '/dashboard',
+      callbackUrl: '/home',
     });
+
+    console.log(result);
   };
 
   return (
@@ -124,11 +127,11 @@ export default function Login() {
         </div>
       </form>
 
-      {/* <form onSubmit={handleSubmitLogin}>
+      <form onSubmit={handleSubmitLogin}>
         <input type="email" name="email" required />
         <input type="password" name="password" required />
         <button type="submit">Sign In</button>
-      </form> */}
+      </form>
     </main>
   );
 }
