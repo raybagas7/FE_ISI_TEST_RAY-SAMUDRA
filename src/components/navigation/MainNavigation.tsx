@@ -20,7 +20,7 @@ const MainNavigation = (): React.ReactNode => {
         <div
           onClick={(e) => e.stopPropagation()}
           id="aside-navigation"
-          className={`relative h-full w-[200px] border-r-[1px] border-border bg-primary px-[3px] pt-[48px]`}
+          className={`relative h-full w-[200px] border-r-[1px] border-border bg-background px-[3px] pt-[48px]`}
         >
           <div className="relative">
             <nav className="mt-[24px]">

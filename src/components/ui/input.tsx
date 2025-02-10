@@ -12,7 +12,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={label}
-            className="text-sm font-medium text-secondary capitalize"
+            className="text-sm font-medium text-primary capitalize"
           >
             {label}
           </label>
@@ -21,8 +21,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           id={label}
           ref={ref}
           className={`
-            w-full px-3 py-2 border border-secondary/20 rounded-lg bg-primary text-secondary
-            focus:outline-none focus:ring-1 focus:ring-secondary/50 transition-all duration-200
+            w-full px-3 py-2 border border-primary/20 rounded-lg bg-background text-primary
+            focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all duration-200
             ${className}
           `}
           {...props}

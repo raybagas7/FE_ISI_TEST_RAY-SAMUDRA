@@ -40,7 +40,7 @@ const SignUp = () => {
   });
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-primary p-6">
+    <main className="flex min-h-screen items-center justify-center bg-background p-6">
       <Card title="Sign Up">
         <form
           onSubmit={(e) => {
@@ -50,7 +50,7 @@ const SignUp = () => {
           className="flex flex-col gap-4"
         >
           <div>
-            <p className="text-sm font-medium text-secondary capitalize mb-2">
+            <p className="text-sm font-medium text-primary capitalize mb-2">
               Role
             </p>
             <RoleSwitch role={role} setRole={setRole} />
@@ -87,7 +87,7 @@ const SignUp = () => {
 
           <button
             type="submit"
-            className="p-2 bg-secondary text-primary rounded-md hover:opacity-80 transition"
+            className="p-2 bg-primary text-background rounded-md hover:opacity-80 transition"
             disabled={registerMutation.isPending}
           >
             {registerMutation.isPending ? 'Signing Up...' : 'Sign Up'}

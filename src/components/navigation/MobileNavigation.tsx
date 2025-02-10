@@ -14,7 +14,8 @@ const MobileNavigation = ({ toggleAside }: Props): React.ReactNode => {
 
   return (
     <div
-      className={`fixed top-0 z-10 flex h-[72px] w-full items-center justify-between bg-primary px-5 
+      className={`fixed top-0 z-10 flex h-[72px] w-full items-center justify-between bg-background px-5 
+        border-b border-border
         ${
           pathname === '/'
             ? 'md:justify-end'

@@ -2,9 +2,10 @@
 
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
-import React, { useRef, useState } from 'react';
+import React, { Fragment, useRef, useState } from 'react';
 import { Item } from './item';
 import { useProjectList } from '@/hooks/useProjectList';
+import Button from '@/components/ui/Button';
 
 export default function SimpleList() {
   const searchRef = useRef('');
@@ -47,15 +48,15 @@ export default function SimpleList() {
   }
 
   return (
-    <main>
-      <section className="bg-neutral-50">
-        <div className="layout bg-black/20 max-w-lg min-h-screen py-20">
-          <h2 className="text-center">Project List</h2>
+    <div className="grid grid-cols-2 divide-x-2">
+      <section className="py-20 px-4">
+        <div className="min-h-screen ">
+          <h2 className="text-center text-xl">Project List</h2>
           <div className="mt-2">
             {isPending ? (
               <p>Loading...</p>
             ) : (
-              <>
+              <div>
                 {projectData.pages[0].data.projects.length > 0 ? (
                   <AnimatePresence initial={false}>
                     {projectData.pages.map((page, index) => (
@@ -73,16 +74,15 @@ export default function SimpleList() {
                 ) : (
                   <p>No data</p>
                 )}
-              </>
+                <div className={clsx(['mt-4 flex justify-center'])}>
+                  <Button type="button">Load More</Button>
+                </div>
+              </div>
             )}
-          </div>
-          <div className={clsx(['mt-4 flex justify-center'])}>
-            <button onClick={handleLoadMore} type="button">
-              Load more
-            </button>
           </div>
         </div>
       </section>
-    </main>
+      <section className="py-20 px-6">tes</section>
+    </div>
   );
 }

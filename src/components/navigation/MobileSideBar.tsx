@@ -70,7 +70,7 @@ const MobileSideBar = (): React.ReactNode => {
           initial="close"
           onClick={(e) => e.stopPropagation()}
           id="aside-navigation"
-          className={`relative h-full w-[200px] border-r-[1px] border-border bg-primary px-[3px] pt-[48px] md:block md:animate-none
+          className={`relative h-full w-[200px] border-r-[1px] border-border bg-background px-[3px] pt-[48px] md:block md:animate-none
           
           `}
         >

@@ -68,7 +68,7 @@ export default function CreateProject() {
 
           <button
             type="submit"
-            className="w-full p-2 rounded-md bg-secondary text-primary font-semibold hover:bg-opacity-80 transition"
+            className="w-full p-2 rounded-md bg-primary text-background font-semibold hover:bg-opacity-80 transition"
             disabled={mutation.isPending}
           >
             {mutation.isPending ? 'Creating...' : 'Create Project'}

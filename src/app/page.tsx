@@ -36,7 +36,7 @@ const SignIn = () => {
   });
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-primary p-6">
+    <main className="flex min-h-screen items-center justify-center bg-background p-6">
       <Card title="Sign In">
         <form
           onSubmit={(e) => {
@@ -63,7 +63,7 @@ const SignIn = () => {
           )}
           <button
             type="submit"
-            className="p-2 bg-secondary text-primary rounded-md hover:opacity-80 transition"
+            className="p-2 bg-primary text-background rounded-md hover:opacity-80 transition"
             disabled={loginMutation.isPending}
           >
             {loginMutation.isPending ? 'Signing In...' : 'Sign In'}

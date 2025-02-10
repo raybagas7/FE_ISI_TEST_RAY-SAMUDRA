@@ -11,13 +11,13 @@ const Card = React.forwardRef<HTMLDivElement, Props>(
     return (
       <div
         className={clsx([
-          'w-full max-w-lg bg-white text-secondary p-8 rounded-2xl shadow-lg border border-gray-300',
+          'w-full max-w-lg bg-white text-primary p-8 rounded-2xl shadow-lg border border-border',
           className,
         ])}
         ref={ref}
         {...rest}
       >
-        <h2 className="text-2xl font-bold text-center text-secondary mb-4">
+        <h2 className="text-2xl font-bold text-center text-primary mb-4">
           {title}
         </h2>
         {children}
