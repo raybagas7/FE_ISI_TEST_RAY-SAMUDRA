@@ -17,7 +17,7 @@ const SignUp = () => {
   const [role, setRole] = useState<'LEAD' | 'TEAM'>('LEAD');
 
   const navigate = useRouter();
-  // Register Mutation
+
   const registerMutation = useMutation({
     mutationFn: async () => {
       const res = await fetch('/api/register', {

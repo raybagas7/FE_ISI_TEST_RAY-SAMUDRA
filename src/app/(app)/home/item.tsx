@@ -1,3 +1,4 @@
+import { Project } from '@/interface/dto';
 import clsx from 'clsx';
 import { AnimatePresence, HTMLMotionProps, motion } from 'framer-motion';
 import * as React from 'react';
@@ -6,20 +7,18 @@ import { RiTodoFill } from 'react-icons/ri';
 import useMeasure from 'react-use-measure';
 
 type Props = {
-  count: number;
   index: number;
-  countList: number[];
-  setCountList: React.Dispatch<React.SetStateAction<number[]>>;
+  project: Project;
 } & HTMLMotionProps<'div'>;
 
 export const Item = React.forwardRef<HTMLDivElement, Props>(
-  ({ className, count, index, countList, setCountList, ...rest }, ref) => {
+  ({ className, index, project, ...rest }, ref) => {
     const [isShowingList, setIsShowingList] = React.useState(false);
     const [innerRef, { height }] = useMeasure();
 
     return (
       <motion.div
-        key={count}
+        key={project.id}
         initial={{ height: 0, opacity: 0 }}
         animate={{
           height: 'auto',
@@ -51,18 +50,14 @@ export const Item = React.forwardRef<HTMLDivElement, Props>(
             filter: 'blur(4px)',
           }}
           transition={{ duration: 0.15, ease: 'easeOut' }}
-          className={clsx([
-            'flex flex-col',
-            'py-1',
-            index === 0 && 'pt-0',
-            index === countList.length - 1 && 'pb-0',
-          ])}
+          className={clsx(['flex flex-col', 'py-1'])}
         >
           <motion.div
             className={clsx([
               'flex flex-col box-content',
               'px-4 py-1 rounded-xl',
-              'bg-neutral-50 border border-gray-300',
+              'bg-white border border-gray-300',
+              'hover:shadow-md transition-shadow duration-300 cursor-pointer',
             ])}
             initial={{
               opacity: 0,
@@ -82,21 +77,17 @@ export const Item = React.forwardRef<HTMLDivElement, Props>(
             transition={{ duration: 0.15, ease: 'easeOut' }}
           >
             <div ref={innerRef}>
-              <div className="flex items-center justify-between">
-                <p className="text-neutral-950 text-sm">List Item {count}</p>
+              <div className="flex items-end justify-between">
+                <div>
+                  <p className="text-neutral-950 text-lg">{project.title}</p>
+                  <p className="text-neutral-950 text-base">
+                    {project.description}
+                  </p>
+                </div>
                 <div className="flex items-center">
                   <RiTodoFill
                     onClick={() => setIsShowingList((prev) => !prev)}
                     className="text-neutral-600"
-                  />
-                  <GiTrashCan
-                    onClick={() =>
-                      setCountList((prev) => [
-                        ...prev.slice(0, index),
-                        ...prev.slice(index + 1),
-                      ])
-                    }
-                    className="text-neutral-600 -mr-2"
                   />
                 </div>
               </div>
@@ -117,26 +108,7 @@ export const Item = React.forwardRef<HTMLDivElement, Props>(
                     }}
                     exit={{ opacity: 0, y: 8, filter: 'blur(4px)' }}
                     transition={{ duration: 0.1, ease: 'easeOut' }}
-                  >
-                    <ul className="flex flex-col gap-2 relative pl-3">
-                      <div className="absolute left-0 h-full w-0.5 bg-neutral-300 rounded-full" />
-                      {Array.from({ length: 3 }).map((_, i) => (
-                        <li key={i} className="flex items-center gap-2 ">
-                          <input
-                            id={`${count}-todo-${i}`}
-                            type="checkbox"
-                            className="rounded size-3.5"
-                          />
-                          <label
-                            htmlFor={`${count}-todo-${i}`}
-                            className="text-xs text-neutral-700"
-                          >
-                            Todo item {i + 1}
-                          </label>
-                        </li>
-                      ))}
-                    </ul>
-                  </motion.div>
+                  ></motion.div>
                 )}
               </AnimatePresence>
             </div>

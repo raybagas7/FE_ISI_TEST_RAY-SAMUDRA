@@ -4,8 +4,6 @@ import { db } from '@/lib/db/db';
 import { users } from '@/lib/db/schema';
 import { getSession } from '@/lib/session';
 
-// Middleware to check if the user is authenticated
-
 // Get all users with the "TEAM" role
 export async function GET(req: NextRequest) {
   const { error } = await getSession(req);

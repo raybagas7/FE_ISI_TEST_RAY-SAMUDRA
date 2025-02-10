@@ -9,17 +9,16 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Card from '@/components/ui/card';
 
-const AuthForm = () => {
+const SignIn = () => {
   const loginRef = useRef<{ email?: string; password?: string }>({});
   const router = useRouter();
 
-  // Login Mutation
   const loginMutation = useMutation({
     mutationFn: async () => {
       const result = await signIn('credentials', {
         email: loginRef.current.email,
         password: loginRef.current.password,
-        redirect: false, // Disable automatic redirection
+        redirect: false,
       });
 
       if (result?.error) {
@@ -78,4 +77,4 @@ const AuthForm = () => {
   );
 };
 
-export default AuthForm;
+export default SignIn;
