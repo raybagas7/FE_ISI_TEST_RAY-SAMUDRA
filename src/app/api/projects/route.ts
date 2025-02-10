@@ -5,22 +5,22 @@ import { auth } from '@/lib/auth';
 import { projects } from '@/lib/db/schema';
 
 // Middleware to check if the user is a LEAD
-export async function isLeader(req: NextRequest) {
-  const session = await auth();
+// export async function isLeader(req: NextRequest) {
+//   const session = await auth();
 
-  if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+//   if (!session) {
+//     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+//   }
 
-  if (session.user.role !== 'LEAD') {
-    return NextResponse.json(
-      { error: 'Forbidden: Only LEAD users can perform this action' },
-      { status: 403 }
-    );
-  }
+//   if (session.user.role !== 'LEAD') {
+//     return NextResponse.json(
+//       { error: 'Forbidden: Only LEAD users can perform this action' },
+//       { status: 403 }
+//     );
+//   }
 
-  return session;
-}
+//   return session;
+// }
 
 // Get project details with tasks
 export const GET = async (req: NextRequest) => {

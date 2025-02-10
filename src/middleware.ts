@@ -3,7 +3,6 @@ import { auth } from './lib/auth';
 
 export const middleware = async (req: NextRequest) => {
   const session = await auth();
-  console.log('session', session); // Debugging: Check the session object
 
   const currentPath = req.nextUrl.pathname;
   const loginPaths = ['/', '/signup'];

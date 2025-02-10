@@ -25,7 +25,6 @@ export default function SimpleList() {
     fetchNextPage,
     hasNextPage,
   } = useProjectList(filter);
-  console.log(projectData);
 
   const handleLoadMore = () => {
     fetchNextPage();
@@ -48,9 +47,9 @@ export default function SimpleList() {
   }
 
   return (
-    <div className="grid grid-cols-2 divide-x-2">
+    <>
       <section className="py-20 px-4">
-        <div className="min-h-screen ">
+        <div>
           <h2 className="text-center text-xl">Project List</h2>
           <div className="mt-2">
             {isPending ? (
@@ -60,7 +59,7 @@ export default function SimpleList() {
                 {projectData.pages[0].data.projects.length > 0 ? (
                   <AnimatePresence initial={false}>
                     {projectData.pages.map((page, index) => (
-                      <>
+                      <Fragment key={`page-${index}`}>
                         {page.data.projects.map((project) => (
                           <Item
                             key={project.id}
@@ -68,14 +67,25 @@ export default function SimpleList() {
                             index={index}
                           />
                         ))}
-                      </>
+                      </Fragment>
                     ))}
                   </AnimatePresence>
                 ) : (
                   <p>No data</p>
                 )}
                 <div className={clsx(['mt-4 flex justify-center'])}>
-                  <Button type="button">Load More</Button>
+                  {hasNextPage ? (
+                    <Button
+                      type="button"
+                      variant="primary"
+                      isloading={isFetching}
+                      onClick={handleLoadMore}
+                    >
+                      Load More
+                    </Button>
+                  ) : (
+                    <p>No More Project</p>
+                  )}
                 </div>
               </div>
             )}
@@ -83,6 +93,6 @@ export default function SimpleList() {
         </div>
       </section>
       <section className="py-20 px-6">tes</section>
-    </div>
+    </>
   );
 }

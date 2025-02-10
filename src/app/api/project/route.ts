@@ -47,24 +47,39 @@ export async function POST(req: NextRequest) {
 
 // Get project details with tasks
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const projectId = searchParams.get('id');
-  if (!projectId) {
-    return NextResponse.json({ error: 'Project ID required' }, { status: 400 });
+  try {
+    const session = await auth();
+    if (!session)
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const { searchParams } = new URL(req.url);
+    const projectId = searchParams.get('id');
+    if (!projectId) {
+      return NextResponse.json(
+        { error: 'Project ID required' },
+        { status: 400 }
+      );
+    }
+
+    const project = await db.query.projects.findFirst({
+      where: (project, { eq }) => eq(project.id, projectId),
+      with: {
+        tasks: true,
+      },
+    });
+
+    if (!project) {
+      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+    }
+
+    return NextResponse.json(project);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
-
-  const project = await db.query.projects.findFirst({
-    where: (project, { eq }) => eq(project.id, projectId),
-    with: {
-      tasks: true,
-    },
-  });
-
-  if (!project) {
-    return NextResponse.json({ error: 'Project not found' }, { status: 404 });
-  }
-
-  return NextResponse.json(project);
 }
 
 // Update a project

@@ -1,9 +1,12 @@
 import { Project } from '@/interface/dto';
+import { formatDate } from '@/lib/utils';
 import clsx from 'clsx';
 import { AnimatePresence, HTMLMotionProps, motion } from 'framer-motion';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 import * as React from 'react';
-import { GiTrashCan } from 'react-icons/gi';
-import { RiTodoFill } from 'react-icons/ri';
+import { IoIosArrowDown } from 'react-icons/io';
 import useMeasure from 'react-use-measure';
 
 type Props = {
@@ -15,9 +18,10 @@ export const Item = React.forwardRef<HTMLDivElement, Props>(
   ({ className, index, project, ...rest }, ref) => {
     const [isShowingList, setIsShowingList] = React.useState(false);
     const [innerRef, { height }] = useMeasure();
-
+    const router = useRouter();
     return (
       <motion.div
+        onClick={() => router.push(`project/${project.id}`)}
         key={project.id}
         initial={{ height: 0, opacity: 0 }}
         animate={{
@@ -52,11 +56,23 @@ export const Item = React.forwardRef<HTMLDivElement, Props>(
           transition={{ duration: 0.15, ease: 'easeOut' }}
           className={clsx(['flex flex-col', 'py-1'])}
         >
+          <button
+            className={clsx(
+              'absolute right-2 top-2 transition-transform hover:bg-primary/10 rounded-full p-1',
+              isShowingList && 'rotate-180'
+            )}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsShowingList((prev) => !prev);
+            }}
+          >
+            <IoIosArrowDown className="text-primary size-5" />
+          </button>
           <motion.div
             className={clsx([
               'flex flex-col box-content',
-              'px-4 py-1 rounded-xl',
-              'bg-white border border-gray-300',
+              'px-4 py-2 rounded-xl',
+              'bg-white border border-border',
               'hover:shadow-md transition-shadow duration-300 cursor-pointer',
             ])}
             initial={{
@@ -77,24 +93,25 @@ export const Item = React.forwardRef<HTMLDivElement, Props>(
             transition={{ duration: 0.15, ease: 'easeOut' }}
           >
             <div ref={innerRef}>
-              <div className="flex items-end justify-between">
+              <div>
                 <div>
                   <p className="text-neutral-950 text-lg">{project.title}</p>
                   <p className="text-neutral-950 text-base">
-                    {project.description}
+                    {project.description ? (
+                      project.description
+                    ) : (
+                      <span className="text-black font-bold italic">
+                        No Description
+                      </span>
+                    )}
                   </p>
                 </div>
-                <div className="flex items-center">
-                  <RiTodoFill
-                    onClick={() => setIsShowingList((prev) => !prev)}
-                    className="text-neutral-600"
-                  />
-                </div>
               </div>
+
               <AnimatePresence mode="popLayout">
                 {isShowingList && (
                   <motion.div
-                    className="mt-1 pb-4"
+                    className="mt-1"
                     initial={{ opacity: 0, y: 8, filter: 'blur(4px)' }}
                     animate={{
                       opacity: 1,
@@ -108,7 +125,15 @@ export const Item = React.forwardRef<HTMLDivElement, Props>(
                     }}
                     exit={{ opacity: 0, y: 8, filter: 'blur(4px)' }}
                     transition={{ duration: 0.1, ease: 'easeOut' }}
-                  ></motion.div>
+                  >
+                    <p>{formatDate(new Date(project.createdAt))}</p>
+                    <p>{formatDate(new Date(project.updatedAt))}</p>
+                    <p>
+                      {project.deletedAt
+                        ? formatDate(new Date(project.deletedAt))
+                        : ''}
+                    </p>
+                  </motion.div>
                 )}
               </AnimatePresence>
             </div>
