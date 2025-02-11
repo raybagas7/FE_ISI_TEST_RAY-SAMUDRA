@@ -30,3 +30,10 @@ export interface TeamUser {
     updatedAt: string;
   };
 }
+
+export interface ProjectMember {
+  userId: string;
+  name: string;
+  email: string;
+  role: string;
+}

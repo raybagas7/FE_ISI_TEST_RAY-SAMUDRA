@@ -35,7 +35,6 @@ const AssignMember = () => {
       <Dialog
         isOpen={isOpen}
         onClose={() => {
-          setIsOpen(false);
           handleClose();
         }}
       >

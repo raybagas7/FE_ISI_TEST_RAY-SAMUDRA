@@ -1,6 +1,9 @@
 import Button from '@/components/ui/button';
 import Card from '@/components/ui/card';
 import { TeamUser } from '@/interface/dto';
+import agent from '@/lib/agent';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
 import React from 'react';
 
 interface Props {
@@ -8,6 +11,28 @@ interface Props {
 }
 
 const UserFound = ({ userData }: Props) => {
+  const { project_id } = useParams();
+  const queryClient = useQueryClient();
+  const {
+    mutate: assignMutate,
+    isPending: assignPending,
+    data: assignData,
+    error: assignError,
+    reset: assigneset,
+  } = useMutation({
+    mutationFn: async () => {
+      return await agent.User.postAssignUserToProject({
+        projectId: project_id,
+        userId: userData.user.id,
+      });
+    },
+    onSuccess() {
+      queryClient.invalidateQueries({
+        queryKey: ['PROJECT_MEMBER', { projectId: project_id }],
+      });
+    },
+  });
+
   return (
     <Card title="User Found!" className="mt-2">
       <Card className="shadow-none">
@@ -25,7 +50,9 @@ const UserFound = ({ userData }: Props) => {
         </p>
       </Card>
       <div className="flex justify-end mt-2">
-        <Button>Add User</Button>
+        <Button isloading={assignPending} onClick={() => assignMutate()}>
+          Add User
+        </Button>
       </div>
     </Card>
   );

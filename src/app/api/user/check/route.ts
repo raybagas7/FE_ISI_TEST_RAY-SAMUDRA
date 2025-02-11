@@ -6,8 +6,10 @@ import { and, eq } from 'drizzle-orm';
 
 export const GET = async (req: NextRequest) => {
   try {
-    const session = await isLeader();
-    if (!session) return;
+    const sessionOrResponse = await isLeader();
+    if (sessionOrResponse instanceof NextResponse) {
+      return sessionOrResponse;
+    }
 
     const { searchParams } = new URL(req.url);
     const email = searchParams.get('email');

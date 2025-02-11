@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db/db';
 import { auth } from '@/lib/auth';
-import { projects } from '@/lib/db/schema';
+import { projectMembers, projects } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 
 // Middleware to check if the user is a LEAD
@@ -32,19 +32,28 @@ export async function POST(req: NextRequest) {
   const session = sessionOrResponse;
 
   const { title, description } = await req.json();
+  const projectId = crypto.randomUUID();
+
+  // Insert the new project
   const newProject = await db
     .insert(projects)
     .values({
-      id: crypto.randomUUID(),
+      id: projectId,
       title,
       description,
       createdBy: session.user.id,
     })
     .returning();
 
+  // Automatically assign the leader to the project
+  await db.insert(projectMembers).values({
+    id: crypto.randomUUID(),
+    projectId,
+    userId: session.user.id,
+  });
+
   return NextResponse.json(newProject);
 }
-
 // Get project details with tasks
 export async function GET(req: NextRequest) {
   try {
@@ -84,8 +93,10 @@ export async function GET(req: NextRequest) {
 
 // Update a project
 export async function PUT(req: NextRequest) {
-  const session = await isLeader();
-  if (!session) return;
+  const sessionOrResponse = await isLeader();
+  if (sessionOrResponse instanceof NextResponse) {
+    return sessionOrResponse;
+  }
 
   const { id, title, description } = await req.json();
   if (!id) {

@@ -1,4 +1,4 @@
-import { TeamUser } from '@/interface/dto';
+import { ProjectMember, TeamUser } from '@/interface/dto';
 import axios, { AxiosResponse } from 'axios';
 
 const api = axios.create({
@@ -11,6 +11,23 @@ const responseBody = <T>(response: AxiosResponse<T>): T => response.data;
 const request = {
   get: async (url: string, params?: Record<string, string | number>) => {
     return api.get(url, { params }).then(responseBody);
+  },
+  post: async (
+    url: string,
+    body?: Record<string, any>,
+    params?: Record<string, string | number>
+  ) => {
+    return api.post(url, body, { params }).then(responseBody);
+  },
+  put: async (
+    url: string,
+    body?: Record<string, any>,
+    params?: Record<string, string | number>
+  ) => {
+    return api.put(url, body, { params }).then(responseBody);
+  },
+  delete: async (url: string, params?: Record<string, string | number>) => {
+    return api.delete(url, { params }).then(responseBody);
   },
 };
 
@@ -29,6 +46,12 @@ const Task = {
 const User = {
   getTeamUserByEmail: (params: Record<string, string>): Promise<TeamUser> => {
     return request.get(`/user/check`, params);
+  },
+  postAssignUserToProject: (body: Record<string, any>) => {
+    return request.post(`/project/assign`, body);
+  },
+  getUserByProjectId: (params: Record<string, any>): Promise<ProjectMember[]> => {
+    return request.get('/project/assign', params);
   },
 };
 
