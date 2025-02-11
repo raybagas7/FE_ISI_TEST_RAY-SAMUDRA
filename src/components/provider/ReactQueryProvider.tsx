@@ -6,7 +6,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const ReactQueryContainer = ({ children }: Props) => {
+const ReactQueryProvider = ({ children }: Props) => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -19,4 +19,4 @@ const ReactQueryContainer = ({ children }: Props) => {
   );
 };
 
-export default ReactQueryContainer;
+export default ReactQueryProvider;

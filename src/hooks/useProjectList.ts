@@ -15,7 +15,7 @@ export const useProjectList = ({
   limit: number;
 }) => {
   const projectList = useInfiniteQuery({
-    queryKey: ['commodities', pageParam, search, sort, order, limit],
+    queryKey: ['projects', pageParam, search, sort, order, limit],
     queryFn: ({ pageParam }) =>
       fetchProjects({ pageParam, search, sort, order, limit }),
     initialPageParam: 1,

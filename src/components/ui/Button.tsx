@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import React from 'react';
-import { GiLoad } from 'react-icons/gi';
 import { RiLoader3Line } from 'react-icons/ri';
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -13,7 +12,7 @@ const Button = React.forwardRef<HTMLButtonElement, Props>(
   ({ className, children, variant = 'primary', isloading, ...rest }, ref) => {
     const variantClasses = {
       primary: 'bg-primary text-white',
-      secondary: 'bg-secondary text-primary',
+      secondary: 'bg-background text-primary',
       destructive: 'bg-destructive text-white',
       outline:
         'bg-transparent border border-primary text-primary hover:opacity-100 hover:bg-primary hover:text-white transition-opacity transition-colors',

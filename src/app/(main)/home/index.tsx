@@ -61,10 +61,7 @@ export default function SimpleList() {
                     {projectData.pages.map((page, index) => (
                       <Fragment key={`page-${index}`}>
                         {page.data.projects.map((project) => (
-                          <Item
-                            key={project.id}
-                            project={project}
-                          />
+                          <Item key={project.id} project={project} />
                         ))}
                       </Fragment>
                     ))}
@@ -72,7 +69,7 @@ export default function SimpleList() {
                 ) : (
                   <p>No data</p>
                 )}
-                <div className={clsx(['mt-4 flex justify-center'])}>
+                <div className={clsx(['my-4 flex justify-center'])}>
                   {hasNextPage ? (
                     <Button
                       type="button"

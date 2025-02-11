@@ -1,13 +1,15 @@
 'use client';
 import { useRef } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Input from '@/components/ui/input';
 import TextArea from '@/components/ui/textarea';
 import Card from '@/components/ui/card';
+import { useRouter } from 'next/navigation';
 
 export default function CreateProject() {
   const formRef = useRef<{ title?: string; description?: string }>({});
-
+  const queryClient = useQueryClient();
+  const router = useRouter();
   const mutation = useMutation({
     mutationFn: async () => {
       const res = await fetch('/api/project', {
@@ -27,8 +29,10 @@ export default function CreateProject() {
 
       return res.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       formRef.current = {};
+      router.push(`/project/${data[0].id}`);
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
     },
   });
 
