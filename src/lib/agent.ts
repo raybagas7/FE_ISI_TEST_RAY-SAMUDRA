@@ -19,8 +19,15 @@ const Project = {
   },
 };
 
+const Task = {
+  getTasks: (id: string, params: Record<string, string | number>) => {
+    return request.get(`projects/${id}/tasks`, params);
+  },
+};
+
 const agent = {
   Project,
+  Task,
 };
 
 export default agent;

@@ -64,7 +64,6 @@ export default function SimpleList() {
                           <Item
                             key={project.id}
                             project={project}
-                            index={index}
                           />
                         ))}
                       </Fragment>

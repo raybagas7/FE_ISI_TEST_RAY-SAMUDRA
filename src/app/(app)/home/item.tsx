@@ -2,7 +2,6 @@ import { Project } from '@/interface/dto';
 import { formatDate } from '@/lib/utils';
 import clsx from 'clsx';
 import { AnimatePresence, HTMLMotionProps, motion } from 'framer-motion';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import * as React from 'react';
@@ -10,12 +9,11 @@ import { IoIosArrowDown } from 'react-icons/io';
 import useMeasure from 'react-use-measure';
 
 type Props = {
-  index: number;
   project: Project;
 } & HTMLMotionProps<'div'>;
 
 export const Item = React.forwardRef<HTMLDivElement, Props>(
-  ({ className, index, project, ...rest }, ref) => {
+  ({ className, project, ...rest }, ref) => {
     const [isShowingList, setIsShowingList] = React.useState(false);
     const [innerRef, { height }] = useMeasure();
     const router = useRouter();

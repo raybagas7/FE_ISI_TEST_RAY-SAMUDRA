@@ -1,9 +1,29 @@
-import React from 'react'
+import agent from '@/lib/agent';
+import { useQuery } from '@tanstack/react-query';
+import React, { useState } from 'react';
 
-const NotStartedTask = () => {
-  return (
-    <div>NotStartedTask</div>
-  )
+interface Props {
+  projectId: string;
 }
 
-export default NotStartedTask
+const NotStartedTask = ({ projectId }: Props) => {
+  const [filter, setFilter] = useState({
+    status: 'NOT_STARTED',
+    order: 'desc',
+    limit: 3,
+  });
+
+  const { data: notStartedTaskData } = useQuery({
+    queryKey: ['NOT_STARTED_TASK', filter],
+    queryFn: async () => {
+      const res = await agent.Task.getTasks(projectId, filter);
+
+      return res;
+    },
+  });
+  console.log(notStartedTaskData);
+
+  return <div>NotStartedTask</div>;
+};
+//
+export default NotStartedTask;
