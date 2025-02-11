@@ -13,7 +13,7 @@ export default function SimpleList() {
     pageParam: 1,
     search: '',
     sort: 'createdAt',
-    order: 'asc',
+    order: 'desc',
     limit: 3,
   });
 
@@ -48,7 +48,7 @@ export default function SimpleList() {
 
   return (
     <>
-      <section className="py-20 px-4">
+      <section className="pt-[88px] px-4">
         <div>
           <h2 className="text-center text-xl">Project List</h2>
           <div className="mt-2">
@@ -92,7 +92,7 @@ export default function SimpleList() {
           </div>
         </div>
       </section>
-      <section className="py-20 px-6">tes</section>
+      <section className="pt-[88px] px-6">tes</section>
     </>
   );
 }

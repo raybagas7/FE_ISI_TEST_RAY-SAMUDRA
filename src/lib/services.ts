@@ -1,10 +1,11 @@
 import { ProjectListResponse } from '@/interface/dto';
+import agent from './agent';
 
 export async function fetchProjects({
   pageParam,
   search,
   sort = 'createdAt',
-  order = 'asc',
+  order = 'desc',
   limit,
 }: {
   pageParam: number;
@@ -18,21 +19,17 @@ export async function fetchProjects({
   nextPage: number | null;
 }> {
   try {
-    const params = new URLSearchParams({
-      limit: String(limit),
-      page: String(pageParam),
-    });
-    if (search) params.append('search', search);
-    if (sort) params.append('sort', sort);
-    if (order) params.append('order', order);
+    const params = Object.fromEntries(
+      new URLSearchParams({
+        limit: String(limit),
+        page: String(pageParam),
+        ...(search && { search }),
+        ...(sort && { sort }),
+        ...(order && { order }),
+      })
+    );
 
-    const response = await fetch(`/api/projects?${params.toString()}`);
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch data from Stein API');
-    }
-
-    const data: ProjectListResponse = await response.json();
+    const data = await agent.Project.getAllProject(params);
 
     return {
       data,
@@ -40,7 +37,7 @@ export async function fetchProjects({
       nextPage: data.pagination.hasMore ? pageParam + 1 : null,
     };
   } catch (error) {
-    console.error('Error fetching data from Stein API:', error);
+    console.error('Error fetching data from API:', error);
     throw error;
   }
 }

@@ -1,9 +1,9 @@
 import React from 'react';
-import TaskList from './taskList';
+import TaskList from './components/taskList';
 
 const DetailProject = () => {
   return (
-    <div className="py-20 px-4 min-h-screen">
+    <div className="pt-[88px] pb-4 px-4 h-screen">
       <TaskList />
     </div>
   );
