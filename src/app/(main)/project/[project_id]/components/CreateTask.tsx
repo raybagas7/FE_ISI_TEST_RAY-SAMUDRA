@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 const CreateTask = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="flex justify-end">
+    <>
       <Button onClick={() => setIsOpen(true)}>Create New Task</Button>
       <Dialog isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <h2 className="text-xl font-semibold">Create New Task</h2>
@@ -28,7 +28,7 @@ const CreateTask = () => {
           </div>
         </form>
       </Dialog>
-    </div>
+    </>
   );
 };
 

@@ -21,7 +21,8 @@ const Button = React.forwardRef<HTMLButtonElement, Props>(
     return (
       <button
         className={clsx([
-          'py-2 rounded-lg hover:opacity-80 transition-opacity',
+          'text-sm lg:text-base',
+          'py-2 rounded-lg hover:opacity-80 transition-opacity flex justify-center items-center',
           variantClasses[`${variant}`],
           isloading ? 'px-2' : 'px-4',
           className,

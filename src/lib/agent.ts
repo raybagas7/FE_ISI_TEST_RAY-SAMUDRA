@@ -1,3 +1,4 @@
+import { TeamUser } from '@/interface/dto';
 import axios, { AxiosResponse } from 'axios';
 
 const api = axios.create({
@@ -8,7 +9,7 @@ const api = axios.create({
 const responseBody = <T>(response: AxiosResponse<T>): T => response.data;
 
 const request = {
-  get: async (url: string, params: Record<string, string | number>) => {
+  get: async (url: string, params?: Record<string, string | number>) => {
     return api.get(url, { params }).then(responseBody);
   },
 };
@@ -25,9 +26,16 @@ const Task = {
   },
 };
 
+const User = {
+  getTeamUserByEmail: (params: Record<string, string>): Promise<TeamUser> => {
+    return request.get(`/user/check`, params);
+  },
+};
+
 const agent = {
   Project,
   Task,
+  User,
 };
 
 export default agent;

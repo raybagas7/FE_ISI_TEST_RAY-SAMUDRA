@@ -5,7 +5,7 @@ import { AnimatePresence } from 'framer-motion';
 import React, { Fragment, useRef, useState } from 'react';
 import { Item } from './item';
 import { useProjectList } from '@/hooks/useProjectList';
-import Button from '@/components/ui/Button';
+import Button from '@/components/ui/button';
 
 export default function SimpleList() {
   const searchRef = useRef('');

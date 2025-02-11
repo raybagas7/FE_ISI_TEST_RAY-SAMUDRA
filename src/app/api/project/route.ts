@@ -5,7 +5,7 @@ import { projects } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 
 // Middleware to check if the user is a LEAD
-export async function isLeader(req: NextRequest) {
+export async function isLeader() {
   const session = await auth();
 
   if (!session) {
@@ -24,7 +24,7 @@ export async function isLeader(req: NextRequest) {
 
 // Create a new project
 export async function POST(req: NextRequest) {
-  const sessionOrResponse = await isLeader(req);
+  const sessionOrResponse = await isLeader();
 
   if (sessionOrResponse instanceof NextResponse) {
     return sessionOrResponse;
@@ -84,7 +84,7 @@ export async function GET(req: NextRequest) {
 
 // Update a project
 export async function PUT(req: NextRequest) {
-  const session = await isLeader(req);
+  const session = await isLeader();
   if (!session) return;
 
   const { id, title, description } = await req.json();
@@ -103,7 +103,7 @@ export async function PUT(req: NextRequest) {
 
 // Delete a project (soft delete by setting deletedAt)
 export async function DELETE(req: NextRequest) {
-  const session = await isLeader(req);
+  const session = await isLeader();
   if (!session) return;
 
   const { id } = await req.json();

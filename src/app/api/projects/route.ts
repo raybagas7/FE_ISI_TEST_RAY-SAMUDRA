@@ -1,34 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { and, asc, desc, eq, ilike, isNull, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, ilike, inArray, isNull, sql } from 'drizzle-orm';
 import { db } from '@/lib/db/db';
 import { auth } from '@/lib/auth';
-import { projects } from '@/lib/db/schema';
+import { projectMembers, projects } from '@/lib/db/schema';
 
-// Middleware to check if the user is a LEAD
-// export async function isLeader(req: NextRequest) {
-//   const session = await auth();
-
-//   if (!session) {
-//     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-//   }
-
-//   if (session.user.role !== 'LEAD') {
-//     return NextResponse.json(
-//       { error: 'Forbidden: Only LEAD users can perform this action' },
-//       { status: 403 }
-//     );
-//   }
-
-//   return session;
-// }
-
-// Get project details with tasks
+// Get all project
 export const GET = async (req: NextRequest) => {
   try {
     const session = await auth();
     if (!session)
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
+    const userId = session.user.id;
     const userRole = session.user.role; // Assuming role is stored in session
     const { searchParams } = new URL(req.url);
 
@@ -51,6 +34,22 @@ export const GET = async (req: NextRequest) => {
     // Query conditions
     const conditions = [];
     if (search) conditions.push(ilike(projects.title, `%${search}%`));
+
+    if (userRole === 'LEAD') {
+      // LEAD users only see their own projects
+      conditions.push(eq(projects.createdBy, userId));
+    } else if (userRole === 'TEAM') {
+      // TEAM users only see projects they are assigned to
+      conditions.push(
+        inArray(
+          projects.id,
+          db
+            .select({ projectId: projectMembers.projectId })
+            .from(projectMembers)
+            .where(eq(projectMembers.userId, userId))
+        )
+      );
+    }
 
     // Soft delete handling
     if (userRole !== 'LEAD') {

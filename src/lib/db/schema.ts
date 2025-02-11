@@ -51,3 +51,14 @@ export const taskHistory = pgTable('task_history', {
   changedAt: timestamp('changed_at').defaultNow(),
   notes: text('notes'),
 });
+
+export const projectMembers = pgTable('project_members', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  projectId: uuid('project_id')
+    .references(() => projects.id)
+    .notNull(),
+  userId: uuid('user_id')
+    .references(() => users.id)
+    .notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+});

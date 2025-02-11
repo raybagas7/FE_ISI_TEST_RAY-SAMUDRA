@@ -19,3 +19,14 @@ export interface ProjectListResponse {
   projects: Project[];
   pagination: Pagination;
 }
+
+export interface TeamUser {
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+}
