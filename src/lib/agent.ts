@@ -54,8 +54,6 @@ const Task = {
     return request.post('/task', body);
   },
   putChangeTaskStatus: (body: UpdateTaskStatus): Promise<any> => {
-    console.log(body);
-
     return request.put('/task', body);
   },
 };

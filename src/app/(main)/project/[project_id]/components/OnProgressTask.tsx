@@ -38,8 +38,6 @@ const OnProgressTask = ({ projectId }: Props) => {
       return await agent.Task.putChangeTaskStatus({ id, status: newStatus });
     },
     onSuccess: (_: any, { newStatus }) => {
-      console.log(newStatus);
-
       queryClient.invalidateQueries({
         queryKey: ['ON_PROGRESS_TASK', projectId],
       });

@@ -155,6 +155,7 @@ const CreateTask = ({ projectMember }: Props) => {
                   </h3>
                   {projectMember?.map((member) => (
                     <ThinCard
+                      key={member.userId}
                       onClick={() => handleAssignMember(member)}
                       className="mt-2 cursor-pointer hover:bg-primary hover:text-white transition-colors"
                     >

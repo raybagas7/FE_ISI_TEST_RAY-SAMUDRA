@@ -31,7 +31,7 @@ const ViewMember = ({ projectMember }: Props) => {
             <div className="space-y-2 mt-2">
               {projectMember.map((member) => {
                 return (
-                  <ThinCard>
+                  <ThinCard key={member.userId}>
                     <div className="flex gap-2 items-center justify-center">
                       <CircleUserRound className="size-5" />
                       <span>{member.name}</span>

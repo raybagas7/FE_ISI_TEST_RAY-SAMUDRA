@@ -38,8 +38,6 @@ const RejectTask = ({ projectId }: Props) => {
       return await agent.Task.putChangeTaskStatus({ id, status: newStatus });
     },
     onSuccess: (_: any, { newStatus }) => {
-      console.log(newStatus);
-
       queryClient.invalidateQueries({
         queryKey: ['REJECT_TASK', projectId],
       });

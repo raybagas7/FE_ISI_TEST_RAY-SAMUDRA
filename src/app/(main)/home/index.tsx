@@ -2,14 +2,13 @@
 
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
-import React, { Fragment, useRef, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Item } from './item';
 import { useProjectList } from '@/hooks/useProjectList';
 import Button from '@/components/ui/button';
 import Spinner from '@/components/ui/spinner';
 
 export const SimpleList = () => {
-  const searchRef = useRef('');
   const [filter, setFilter] = useState({
     pageParam: 1,
     search: '',

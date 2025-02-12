@@ -38,8 +38,6 @@ const DoneTask = ({ projectId }: Props) => {
       return await agent.Task.putChangeTaskStatus({ id, status: newStatus });
     },
     onSuccess: (_: any, { newStatus }) => {
-      console.log(newStatus);
-
       queryClient.invalidateQueries({
         queryKey: ['DONE_TASK', projectId],
       });

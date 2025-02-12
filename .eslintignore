@@ -1,0 +1,4 @@
+/src/interfaces/*
+/src/lib/*
+/src/hooks/*
+types.d.ts

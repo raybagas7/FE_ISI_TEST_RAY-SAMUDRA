@@ -38,8 +38,6 @@ const NotStartedTask = ({ projectId }: Props) => {
       return await agent.Task.putChangeTaskStatus({ id, status: newStatus });
     },
     onSuccess: (_: any, { newStatus }) => {
-      console.log(newStatus);
-
       queryClient.invalidateQueries({
         queryKey: ['NOT_STARTED_TASK', projectId],
       });
