@@ -39,7 +39,7 @@ git clone https://github.com/raybagas7/FE_ISI_TEST_RAY-SAMUDRA.git
 Go to the project directory
 
 ```bash
-cd Todo-Task-App
+cd FE_ISI_TEST_RAY-SAMUDRA
 ```
 
 Install dependencies
