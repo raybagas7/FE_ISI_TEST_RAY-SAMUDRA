@@ -1,8 +1,8 @@
 import { db } from '@/lib/db/db';
 import { projectMembers, users } from '@/lib/db/schema';
+import { isLeader } from '@/lib/session';
 import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
-import { isLeader } from '../route';
 
 // Get all assign User in the project
 export async function GET(req: NextRequest) {

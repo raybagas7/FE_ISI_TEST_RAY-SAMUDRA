@@ -6,7 +6,7 @@ import { getSession } from '@/lib/session';
 
 // Create a new task (LEAD only)
 export async function POST(req: NextRequest) {
-  const { session, error } = await getSession(req);
+  const { session, error } = await getSession();
   if (error) return error;
   if (session.user.role !== 'LEAD') {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
@@ -61,7 +61,7 @@ export async function GET(req: NextRequest) {
 
 // Update task details (LEAD only) or update task status (LEAD & TEAM)
 export async function PUT(req: NextRequest) {
-  const { session, error } = await getSession(req);
+  const { session, error } = await getSession();
   if (error) return error;
 
   const { id, title, description, status, notes } = await req.json();
@@ -114,7 +114,7 @@ export async function PUT(req: NextRequest) {
 
 // Delete a task (LEAD only)
 export async function DELETE(req: NextRequest) {
-  const { session, error } = await getSession(req);
+  const { session, error } = await getSession();
   if (error) return error;
   if (session.user.role !== 'LEAD') {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });

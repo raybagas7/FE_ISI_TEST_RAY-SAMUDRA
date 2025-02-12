@@ -6,8 +6,10 @@ import { motion, useAnimationControls } from 'framer-motion';
 import { Grid2x2, Grid2x2Plus, LogOut } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { signOut } from 'next-auth/react';
-
+import { useSelector } from 'react-redux';
+import { RootState } from '@/lib/configureStore';
 const MobileSideBar = (): React.ReactNode => {
+  const user = useSelector((state: RootState) => state.user.user);
   const pathname = usePathname();
   const [asideHide, setAsideHide] = useState<boolean | undefined>();
   const onChangeNav = async () => {
@@ -84,13 +86,15 @@ const MobileSideBar = (): React.ReactNode => {
                   onClick={() => onChangeNav()}
                   isActive={pathname === '/home'}
                 />
-                <ListNavigation
-                  name="Create Project"
-                  to="/project/create"
-                  onClick={() => onChangeNav()}
-                  icon={<Grid2x2Plus />}
-                  isActive={pathname === '/project/create'}
-                />
+                {user?.role === 'LEAD' && (
+                  <ListNavigation
+                    name="Create Project"
+                    to="/project/create"
+                    onClick={() => onChangeNav()}
+                    icon={<Grid2x2Plus />}
+                    isActive={pathname === '/project/create'}
+                  />
+                )}
                 <ListNavigation
                   name="Logout"
                   to="/"

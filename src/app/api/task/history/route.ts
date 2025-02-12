@@ -6,7 +6,7 @@ import { getSession } from '@/lib/session';
 
 // Get task history by task ID (LEAD & TEAM allowed)
 export async function GET(req: NextRequest) {
-  const { session, error } = await getSession(req);
+  const { session, error } = await getSession();
   if (error) return error;
 
   const { searchParams } = new URL(req.url);

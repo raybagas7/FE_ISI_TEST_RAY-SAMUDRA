@@ -1,12 +1,12 @@
 import { db } from '@/lib/db/db';
 import { users } from '@/lib/db/schema';
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   const { email, password, name, role } = await request.json();
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcryptjs.hash(password, 10);
 
   try {
     const user = await db

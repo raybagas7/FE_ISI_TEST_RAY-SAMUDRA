@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { isLeader } from '../../project/route';
 import { db } from '@/lib/db/db';
 import { users } from '@/lib/db/schema';
 import { and, eq } from 'drizzle-orm';
+import { isLeader } from '@/lib/session';
 
 export const GET = async (req: NextRequest) => {
   try {

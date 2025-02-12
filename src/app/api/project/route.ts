@@ -3,24 +3,7 @@ import { db } from '@/lib/db/db';
 import { auth } from '@/lib/auth';
 import { projectMembers, projects } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
-
-// Middleware to check if the user is a LEAD
-export async function isLeader() {
-  const session = await auth();
-
-  if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  if (session.user.role !== 'LEAD') {
-    return NextResponse.json(
-      { error: 'Forbidden: Only LEAD users can perform this action' },
-      { status: 403 }
-    );
-  }
-
-  return session;
-}
+import { isLeader } from '@/lib/session';
 
 // Create a new project
 export async function POST(req: NextRequest) {

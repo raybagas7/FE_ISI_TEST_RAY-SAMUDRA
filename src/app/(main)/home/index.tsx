@@ -67,7 +67,7 @@ export const SimpleList = () => {
                     ))}
                   </AnimatePresence>
                 ) : (
-                  <p>No data</p>
+                  <p className="text-center">No project Assigned to you</p>
                 )}
                 <div className={clsx(['my-4 flex justify-center'])}>
                   {hasNextPage ? (

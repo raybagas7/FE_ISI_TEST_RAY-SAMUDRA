@@ -5,9 +5,12 @@ import MobileSideBar from './MobileSideBar';
 import { Grid2x2, Grid2x2Plus, LogOut } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { signOut } from 'next-auth/react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/lib/configureStore';
 
 const MainNavigation = (): React.ReactNode => {
   const pathname = usePathname();
+  const user = useSelector((state: RootState) => state.user.user);
 
   return (
     <>
@@ -29,12 +32,14 @@ const MainNavigation = (): React.ReactNode => {
                   icon={<Grid2x2 />}
                   isActive={pathname === '/home'}
                 />
-                <ListNavigation
-                  name="Create Project"
-                  to="/project/create"
-                  icon={<Grid2x2Plus />}
-                  isActive={pathname === '/project/create'}
-                />
+                {user?.role === 'LEAD' && (
+                  <ListNavigation
+                    name="Create Project"
+                    to="/project/create"
+                    icon={<Grid2x2Plus />}
+                    isActive={pathname === '/project/create'}
+                  />
+                )}
                 <ListNavigation
                   name="Logout"
                   to="/"
