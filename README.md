@@ -33,7 +33,7 @@ Todo App with role based account, project and task management
 Clone the project
 
 ```bash
-git clone https://github.com/raybagas7/Todo-Task-App.git
+git clone https://github.com/raybagas7/FE_ISI_TEST_RAY-SAMUDRA.git
 ```
 
 Go to the project directory
