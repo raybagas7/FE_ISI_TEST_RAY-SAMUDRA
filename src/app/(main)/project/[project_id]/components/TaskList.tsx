@@ -10,11 +10,11 @@ const TaskList = () => {
   const { project_id } = useParams();
 
   return (
-    <div className="bg-black/20 flex-1">
+    <div className="flex-1 grid grid-rows-4 grid-cols-none lg:grid-rows-none lg:grid-cols-4 gap-2 min-h-0">
       <NotStartedTask projectId={project_id as string} />
-      <OnProgressTask />
-      <DoneTask />
-      <RejectTask />a
+      <OnProgressTask projectId={project_id as string} />
+      <DoneTask projectId={project_id as string} />
+      <RejectTask projectId={project_id as string} />
     </div>
   );
 };

@@ -12,7 +12,7 @@ const Spinner = React.forwardRef<HTMLDivElement, Props>(
         className={clsx(['flex justify-center items-center', className])}
         {...rest}
       >
-        <LoaderPinwheel className="size-8 animate-spin" />
+        <LoaderPinwheel className={clsx(['size-8 animate-spin', className])} />
       </div>
     );
   }

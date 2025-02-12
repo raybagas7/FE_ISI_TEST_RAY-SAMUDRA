@@ -21,19 +21,19 @@ const DetailContent = () => {
   });
 
   return (
-    <div>
+    <div className="flex-1 flex-col gap-8 flex">
       {isPending ? (
-        <div className="flex justify-between">
-          <Skeleton className="h-10 w-32 rounded-md" />
+        <div className="flex justify-between w-full">
+          <Skeleton className="max-h-10 max-w-32 rounded-md" />
           <div className="flex gap-4 justify-end">
-            <Skeleton className="h-10 w-40 rounded-md" />
-            <Skeleton className="h-10 w-40 rounded-md" />
+            <Skeleton className="min-h-10 min-w-40 rounded-md" />
+            <Skeleton className="min-h-10 min-w-40 rounded-md" />
           </div>
         </div>
       ) : (
         <>
           {projectMember && (
-            <>
+            <div className="flex-1 flex flex-col gap-8">
               <div className="flex justify-between">
                 <ViewMember projectMember={projectMember} />
                 {user?.role === 'LEAD' ? (
@@ -44,7 +44,7 @@ const DetailContent = () => {
                 ) : null}
               </div>
               <TaskList />
-            </>
+            </div>
           )}
         </>
       )}

@@ -7,7 +7,7 @@ import { Item } from './item';
 import { useProjectList } from '@/hooks/useProjectList';
 import Button from '@/components/ui/button';
 
-export default function SimpleList() {
+export const SimpleList = () => {
   const searchRef = useRef('');
   const [filter, setFilter] = useState({
     pageParam: 1,
@@ -91,4 +91,6 @@ export default function SimpleList() {
       <section className="pt-[88px] px-6">tes</section>
     </>
   );
-}
+};
+
+export default SimpleList;

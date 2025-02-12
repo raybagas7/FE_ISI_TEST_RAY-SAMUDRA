@@ -1,10 +1,9 @@
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db/db';
-import { tasks } from '@/lib/db/schema';
-import { eq, and, desc, asc } from 'drizzle-orm';
+import { tasks, users } from '@/lib/db/schema';
+import { and, asc, desc, eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
-// Get all tasks from chosen project id
 export async function GET(
   req: NextRequest,
   { params }: { params: { projectId: string } }
@@ -14,11 +13,16 @@ export async function GET(
     if (!session)
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
+    const { searchParams } = new URL(req.url);
+
     const projectId = params.projectId;
-    const url = new URL(req.url);
-    const status = url.searchParams.get('status');
-    const assignedTo = url.searchParams.get('assignedTo');
-    const order = url.searchParams.get('order') === 'desc' ? 'desc' : 'asc';
+    const status = searchParams.get('status');
+    const assignedTo = searchParams.get('assignedTo');
+    const order = searchParams.get('order') === 'desc' ? 'desc' : 'asc';
+    const sortField =
+      searchParams.get('sort') === 'updatedAt'
+        ? tasks.updatedAt
+        : tasks.createdAt;
 
     const whereConditions = [eq(tasks.projectId, projectId)];
     if (status)
@@ -31,12 +35,30 @@ export async function GET(
     if (assignedTo) whereConditions.push(eq(tasks.assignedTo, assignedTo));
 
     const result = await db
-      .select()
+      .select({
+        taskId: tasks.id,
+        title: tasks.title,
+        description: tasks.description,
+        status: tasks.status,
+        projectId: tasks.projectId,
+        assignedTo: tasks.assignedTo,
+        createdBy: tasks.createdBy,
+        dueDate: tasks.dueDate,
+        createdAt: tasks.createdAt,
+        updatedAt: tasks.updatedAt,
+        user: {
+          id: users.id,
+          name: users.name,
+          email: users.email,
+          role: users.role, // Adjust based on your users schema
+        },
+      })
       .from(tasks)
+      .leftJoin(users, eq(tasks.assignedTo, users.id)) // Join tasks with users
       .where(and(...whereConditions))
-      .orderBy(order === 'desc' ? desc(tasks.createdAt) : asc(tasks.createdAt));
+      .orderBy(order === 'desc' ? desc(sortField) : asc(sortField));
 
-    return Response.json({ tasks: result });
+    return NextResponse.json({ tasks: result });
   } catch (error) {
     console.error('Error fetching tasks:', error);
     return new Response('Internal Server Error', { status: 500 });

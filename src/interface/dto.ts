@@ -1,3 +1,4 @@
+export type Status = 'NOT_STARTED' | 'ON_PROGRESS' | 'DONE' | 'REJECT';
 export interface Project {
   id: string;
   title: string;
@@ -46,15 +47,29 @@ export interface CreateTaskBody {
   assignedTo: string;
 }
 
-export interface TaskDetail {
+export interface UpdateTaskStatus {
   id: string;
+  title?: string;
+  description?: string;
+  status?: string;
+  notes?: string;
+}
+
+export interface TaskDetail {
+  taskId: string;
   title: string;
   description: string;
-  status: 'NOT_STARTED' | 'ON_PROGRESS' | 'DONE' | 'REJECT';
+  status: Status;
   projectId: string;
   createdBy: string;
   assignedTo: string;
   dueDate: string;
   createdAt: string;
   updatedAt: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    role: 'TEAM' | 'LEAD';
+  };
 }

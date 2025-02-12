@@ -3,6 +3,7 @@ import {
   ProjectMember,
   TaskDetail,
   TeamUser,
+  UpdateTaskStatus,
 } from '@/interface/dto';
 import axios, { AxiosResponse } from 'axios';
 
@@ -43,11 +44,19 @@ const Project = {
 };
 
 const Task = {
-  getTasks: (id: string, params: Record<string, string | number>) => {
+  getTasks: (
+    id: string,
+    params: Record<string, string | number>
+  ): Promise<{ tasks: TaskDetail[] }> => {
     return request.get(`/projects/${id}/tasks`, params);
   },
   postCreateTaks: (body: CreateTaskBody): Promise<TaskDetail> => {
     return request.post('/task', body);
+  },
+  putChangeTaskStatus: (body: UpdateTaskStatus): Promise<any> => {
+    console.log(body);
+
+    return request.put('/task', body);
   },
 };
 
