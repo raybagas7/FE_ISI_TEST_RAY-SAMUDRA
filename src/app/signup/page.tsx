@@ -7,6 +7,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import RoleSwitch from '@/components/ui/roleswitch';
 import Card from '@/components/ui/card';
+import Link from 'next/link';
 
 const SignUp = () => {
   const registerRef = useRef<{
@@ -93,6 +94,9 @@ const SignUp = () => {
             {registerMutation.isPending ? 'Signing Up...' : 'Sign Up'}
           </button>
         </form>
+        <div className="mt-4 flex justify-end">
+          <Link href={'/'}>Login with existing account</Link>
+        </div>
       </Card>
     </main>
   );

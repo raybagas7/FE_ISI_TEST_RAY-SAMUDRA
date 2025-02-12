@@ -6,6 +6,7 @@ import React, { Fragment, useRef, useState } from 'react';
 import { Item } from './item';
 import { useProjectList } from '@/hooks/useProjectList';
 import Button from '@/components/ui/button';
+import Spinner from '@/components/ui/spinner';
 
 export const SimpleList = () => {
   const searchRef = useRef('');
@@ -48,13 +49,13 @@ export const SimpleList = () => {
 
   return (
     <>
-      <section className="pt-[88px] px-4">
-        <div>
-          <h2 className="text-center text-xl">Project List</h2>
-          <div className="mt-2">
-            {isPending ? (
-              <p>Loading...</p>
-            ) : (
+      <section className="pt-[88px] px-4 min-w-[50vw]">
+        {isPending ? (
+          <Spinner />
+        ) : (
+          <div>
+            <h2 className="text-center text-xl font-bold">Project List</h2>
+            <div className="mt-2">
               <div>
                 {projectData.pages[0].data.projects.length > 0 ? (
                   <AnimatePresence initial={false}>
@@ -84,11 +85,10 @@ export const SimpleList = () => {
                   )}
                 </div>
               </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
       </section>
-      <section className="pt-[88px] px-6">tes</section>
     </>
   );
 };
