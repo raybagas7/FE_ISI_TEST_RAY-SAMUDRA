@@ -3,13 +3,13 @@ import React from 'react';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {}
 
-const ThinCard = React.forwardRef<HTMLDivElement, Props>(
+const Skeleton = React.forwardRef<HTMLDivElement, Props>(
   ({ className, children, ...rest }, ref) => {
     return (
       <div
         ref={ref}
         className={clsx([
-          'flex justify-between items-center gap-4 w-full p-2 border-border rounded-md border',
+          'w-full min-h-5 bg-primary/10 animate-pulse',
           className,
         ])}
         {...rest}
@@ -20,4 +20,4 @@ const ThinCard = React.forwardRef<HTMLDivElement, Props>(
   }
 );
 
-export default ThinCard;
+export default Skeleton;

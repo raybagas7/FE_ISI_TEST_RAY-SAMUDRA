@@ -14,7 +14,7 @@ const NotStartedTask = ({ projectId }: Props) => {
   });
 
   const { data: notStartedTaskData } = useQuery({
-    queryKey: ['NOT_STARTED_TASK', filter],
+    queryKey: ['NOT_STARTED_TASK', projectId, filter.status, filter.order],
     queryFn: async () => {
       const res = await agent.Task.getTasks(projectId, filter);
 

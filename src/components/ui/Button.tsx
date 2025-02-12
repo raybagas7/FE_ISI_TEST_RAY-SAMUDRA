@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
-import { RiLoader3Line } from 'react-icons/ri';
+import { LoaderPinwheel } from 'lucide-react';
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isloading?: boolean;
@@ -31,7 +31,7 @@ const Button = React.forwardRef<HTMLButtonElement, Props>(
         {...rest}
       >
         {isloading ? (
-          <RiLoader3Line className="size-5 animate-spin" />
+          <LoaderPinwheel className="size-5 animate-spin" />
         ) : (
           children
         )}

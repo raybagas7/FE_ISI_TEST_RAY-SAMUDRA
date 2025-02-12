@@ -1,3 +1,4 @@
+'use client';
 import Button from '@/components/ui/button';
 import Card from '@/components/ui/card';
 import { TeamUser } from '@/interface/dto';
@@ -28,7 +29,7 @@ const UserFound = ({ userData }: Props) => {
     },
     onSuccess() {
       queryClient.invalidateQueries({
-        queryKey: ['PROJECT_MEMBER', { projectId: project_id }],
+        queryKey: ['PROJECT_MEMBER', project_id],
       });
     },
   });

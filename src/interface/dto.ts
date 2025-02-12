@@ -35,5 +35,26 @@ export interface ProjectMember {
   userId: string;
   name: string;
   email: string;
-  role: string;
+  role: 'LEAD' | 'TEAM';
+}
+
+export interface CreateTaskBody {
+  title: string;
+  description: string;
+  projectId: string;
+  dueDate: Date | undefined;
+  assignedTo: string;
+}
+
+export interface TaskDetail {
+  id: string;
+  title: string;
+  description: string;
+  status: 'NOT_STARTED' | 'ON_PROGRESS' | 'DONE' | 'REJECT';
+  projectId: string;
+  createdBy: string;
+  assignedTo: string;
+  dueDate: string;
+  createdAt: string;
+  updatedAt: string;
 }

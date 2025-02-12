@@ -1,21 +1,17 @@
+'use client';
 import Button from '@/components/ui/button';
 import Dialog from '@/components/ui/dialog';
-import Spinner from '@/components/ui/spinner';
 import ThinCard from '@/components/ui/thincard';
-import agent from '@/lib/agent';
-import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { ProjectMember } from '@/interface/dto';
 import React, { useState } from 'react';
-import { IoPersonCircleOutline } from 'react-icons/io5';
-const ViewMember = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const { project_id } = useParams();
+import { CircleUserRound } from 'lucide-react';
 
-  const { data: projectMember, isPending } = useQuery({
-    queryKey: ['PROJECT_MEMBER', { projectId: project_id }],
-    queryFn: async () =>
-      await agent.User.getUserByProjectId({ projectId: project_id }),
-  });
+interface Props {
+  projectMember: ProjectMember[];
+}
+
+const ViewMember = ({ projectMember }: Props) => {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
@@ -29,34 +25,31 @@ const ViewMember = () => {
         <h2 className="text-xl font-semibold text-center">
           List of the member
         </h2>
-        {isPending ? (
-          <Spinner className="mt-4" />
-        ) : (
-          <div>
-            {projectMember && projectMember?.length > 0 ? (
-              <div>
-                {projectMember.map((member) => {
-                  return (
-                    <ThinCard>
-                      <div className="flex gap-2 items-center justify-center">
-                        <IoPersonCircleOutline className="size-5" />
-                        <span>{member.name}</span>
-                      </div>
-                      <p>
-                        <span>{member.email}</span>
-                        <span>/{member.role}</span>
-                      </p>
-                    </ThinCard>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="mt-4 text-center">
-                No user assigned to this project yet
-              </div>
-            )}
-          </div>
-        )}
+
+        <div>
+          {projectMember && projectMember?.length > 0 ? (
+            <div className="space-y-2 mt-2">
+              {projectMember.map((member) => {
+                return (
+                  <ThinCard>
+                    <div className="flex gap-2 items-center justify-center">
+                      <CircleUserRound className="size-5" />
+                      <span>{member.name}</span>
+                    </div>
+                    <p>
+                      <span>{member.email}</span>
+                      <span>/{member.role}</span>
+                    </p>
+                  </ThinCard>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="mt-4 text-center">
+              No user assigned to this project yet
+            </div>
+          )}
+        </div>
       </Dialog>
     </>
   );

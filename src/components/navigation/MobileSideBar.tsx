@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import MobileNavigation from './MobileNavigation';
 import ListNavigation from './ListNavigation/ListNavigation';
 import { motion, useAnimationControls } from 'framer-motion';
-import { GrProjects } from 'react-icons/gr';
-import { RiApps2AddFill } from 'react-icons/ri';
+import { Grid2x2, Grid2x2Plus, LogOut } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 
 const MobileSideBar = (): React.ReactNode => {
   const pathname = usePathname();
@@ -80,7 +80,7 @@ const MobileSideBar = (): React.ReactNode => {
                 <ListNavigation
                   name="Home"
                   to="/"
-                  icon={<GrProjects />}
+                  icon={<Grid2x2 />}
                   onClick={() => onChangeNav()}
                   isActive={pathname === '/home'}
                 />
@@ -88,8 +88,16 @@ const MobileSideBar = (): React.ReactNode => {
                   name="Create Project"
                   to="/project/create"
                   onClick={() => onChangeNav()}
-                  icon={<RiApps2AddFill />}
+                  icon={<Grid2x2Plus />}
                   isActive={pathname === '/project/create'}
+                />
+                <ListNavigation
+                  name="Logout"
+                  to="/"
+                  icon={<LogOut />}
+                  onClick={() => {
+                    signOut();
+                  }}
                 />
               </ul>
             </nav>

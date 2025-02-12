@@ -2,8 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { IoArrowBack } from 'react-icons/io5';
-import { GiHamburgerMenu } from 'react-icons/gi';
+import { ArrowLeft, Menu } from 'lucide-react';
 
 interface Props {
   toggleAside: () => void;
@@ -23,17 +22,13 @@ const MobileNavigation = ({ toggleAside }: Props): React.ReactNode => {
         }
     `}
     >
-      <GiHamburgerMenu
-        className="size-6 cursor-pointer md:hidden"
-        onClick={toggleAside}
-      />
-
+      <Menu className="size-6 cursor-pointer md:hidden" onClick={toggleAside} />
       {pathname !== '/home' && (
         <Link
           href={'/home'}
           className="hidden md:flex md:items-center md:justify-center "
         >
-          <IoArrowBack className="size-6" onClick={toggleAside} />
+          <ArrowLeft className="size-6" onClick={toggleAside} />
         </Link>
       )}
     </div>

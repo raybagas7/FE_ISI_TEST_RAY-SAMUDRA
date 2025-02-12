@@ -2,10 +2,8 @@
 import React from 'react';
 import ListNavigation from './ListNavigation/ListNavigation';
 import MobileSideBar from './MobileSideBar';
-import { GrProjects } from 'react-icons/gr';
-import { RiApps2AddFill } from 'react-icons/ri';
+import { Grid2x2, Grid2x2Plus, LogOut } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import { RiLogoutBoxLine } from 'react-icons/ri';
 import { signOut } from 'next-auth/react';
 
 const MainNavigation = (): React.ReactNode => {
@@ -28,19 +26,19 @@ const MainNavigation = (): React.ReactNode => {
                 <ListNavigation
                   name="Home"
                   to="/home"
-                  icon={<GrProjects />}
+                  icon={<Grid2x2 />}
                   isActive={pathname === '/home'}
                 />
                 <ListNavigation
                   name="Create Project"
                   to="/project/create"
-                  icon={<RiApps2AddFill />}
+                  icon={<Grid2x2Plus />}
                   isActive={pathname === '/project/create'}
                 />
                 <ListNavigation
                   name="Logout"
                   to="/"
-                  icon={<RiLogoutBoxLine />}
+                  icon={<LogOut />}
                   onClick={() => {
                     signOut();
                   }}

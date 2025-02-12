@@ -14,6 +14,12 @@ export async function POST(req: NextRequest) {
 
   const { title, description, projectId, assignedTo, dueDate } =
     await req.json();
+
+  const parsedDueDate = new Date(dueDate);
+  if (isNaN(parsedDueDate.getTime())) {
+    return NextResponse.json({ error: 'Invalid dueDate' }, { status: 400 });
+  }
+
   const newTask = await db
     .insert(tasks)
     .values({
@@ -23,11 +29,11 @@ export async function POST(req: NextRequest) {
       projectId,
       assignedTo,
       createdBy: session.user.id,
-      dueDate,
+      dueDate: parsedDueDate,
     })
     .returning();
 
-  return NextResponse.json(newTask);
+  return NextResponse.json(newTask[0]);
 }
 
 // Get task details (any authenticated user)

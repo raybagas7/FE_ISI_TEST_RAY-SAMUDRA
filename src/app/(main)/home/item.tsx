@@ -3,9 +3,8 @@ import { formatDate } from '@/lib/utils';
 import clsx from 'clsx';
 import { AnimatePresence, HTMLMotionProps, motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-
 import * as React from 'react';
-import { IoIosArrowDown } from 'react-icons/io';
+import { ChevronDown } from 'lucide-react';
 import useMeasure from 'react-use-measure';
 
 type Props = {
@@ -64,7 +63,7 @@ export const Item = React.forwardRef<HTMLDivElement, Props>(
               setIsShowingList((prev) => !prev);
             }}
           >
-            <IoIosArrowDown className="text-primary size-5" />
+            <ChevronDown className="text-primary size-5" />
           </button>
           <motion.div
             className={clsx([

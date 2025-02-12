@@ -1,4 +1,9 @@
-import { ProjectMember, TeamUser } from '@/interface/dto';
+import {
+  CreateTaskBody,
+  ProjectMember,
+  TaskDetail,
+  TeamUser,
+} from '@/interface/dto';
 import axios, { AxiosResponse } from 'axios';
 
 const api = axios.create({
@@ -39,22 +44,26 @@ const Project = {
 
 const Task = {
   getTasks: (id: string, params: Record<string, string | number>) => {
-    return request.get(`projects/${id}/tasks`, params);
+    return request.get(`/projects/${id}/tasks`, params);
+  },
+  postCreateTaks: (body: CreateTaskBody): Promise<TaskDetail> => {
+    return request.post('/task', body);
   },
 };
 
 const User = {
-  getTeamUserByEmail: (params: Record<string, string>): Promise<TeamUser> => {
+  getTeamUserByEmail: (params: Record<string, string>) => {
     return request.get(`/user/check`, params);
   },
-  postAssignUserToProject: (body: Record<string, any>) => {
+  postAssignUserToProject: (body: Record<string, any>): Promise<TeamUser> => {
     return request.post(`/project/assign`, body);
   },
-  getUserByProjectId: (params: Record<string, any>): Promise<ProjectMember[]> => {
+  getUserByProjectId: (
+    params: Record<string, any>
+  ): Promise<ProjectMember[]> => {
     return request.get('/project/assign', params);
   },
 };
-
 const agent = {
   Project,
   Task,
