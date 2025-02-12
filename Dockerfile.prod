@@ -14,6 +14,8 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
+# Run Drizzle migrations during the build phase
+RUN npx drizzle-kit push --force
 
 # Rebuild the source code only when needed
 FROM base AS builder
