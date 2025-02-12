@@ -1,36 +1,116 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Ihsan Solusi Fullstack Engineer Take-home Assignment
 
-## Getting Started
+## Overview
 
-First, run the development server:
+Todo App with role based account, project and task management
+
+## Prerequisites
+
+- Docker
+
+## Tech Stack
+
+- React 18
+- Next.js 14 with TypeScript
+- Redux
+- React Query
+- Tailwind
+- Radix
+- Framer Motion
+- Postgres
+- Drizzle ORM
+- Axios
+- React-Day-Picker
+- lucide-react
+- AuthJs/Credentials Provider
+
+## Development Dependencies
+
+- ESLint
+
+## Installation / Run Locally
+
+Clone the project
+
+```bash
+git clone https://github.com/raybagas7/Todo-Task-App.git
+```
+
+Go to the project directory
+
+```bash
+cd Todo-Task-App
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+Environment variable
+
+```bash
+cp .env.example .env
+```
+
+**_follow the .env.example and fill every variable and base api url with your needs_**
+
+Start the application in Development mode.
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**_(Web app will run on port 3000)_**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+To build and start the application you can run this command
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+npm run build
+```
 
-## Learn More
+```bash
+npm run start
+```
 
-To learn more about Next.js, take a look at the following resources:
+**_(Web app will run on port 3000)_**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Running the apps with Docker
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Before get into docker build, ensure you have Docker installed on your machine. You can download and install Docker from the . [official website](https://www.docker.com)
 
-## Deploy on Vercel
+Ensure that you have set the .env to the root directory:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+cp .env.example .env
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+**_follow the .env.example and fill every variable and base api url with your needs_**
+
+- **Navigate** to the project when you clone this project already.
+
+- **Run** the Docker container
+
+  ```bash
+  docker-compose up --build
+  ```
+
+  This command will start the Docker container and run the application. To stop the container, press Ctrl + C in the terminal where it's running or run:
+
+  ```bash
+  docker-compose down
+  ```
+
+This command will start the Docker container and run the application.
+
+Once the Docker container is running, you can access the Node.js application by opening a web browser and navigating to localhost:3000.
+**To run application in development mode in docker**
+
+Currently this application can run development mode in docker with this command
+
+```bash
+docker-compose -f docker-compose.prod.yml up --build
+```
+
+Unforinately for current version the volume won't work
