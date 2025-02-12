@@ -54,6 +54,12 @@ Environment variable
 cp .env.example .env
 ```
 
+```bash
+npm npx drizzle-kit push
+```
+
+You can add --force for drazzle-kit to accept the question
+
 **_follow the .env.example and fill every variable and base api url with your needs_**
 
 Start the application in Development mode.
