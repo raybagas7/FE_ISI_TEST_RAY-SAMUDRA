@@ -5,12 +5,14 @@ import Input from '@/components/ui/input';
 import TextArea from '@/components/ui/textarea';
 import Card from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/Toaster';
 
 export default function CreateProject() {
   const formRef = useRef<{ title?: string; description?: string }>({});
   const queryClient = useQueryClient();
+  const { showToast } = useToast();
   const router = useRouter();
-  const mutation = useMutation({
+  const { mutate, isError, error, isPending } = useMutation({
     mutationFn: async () => {
       const res = await fetch('/api/project', {
         method: 'POST',
@@ -33,26 +35,24 @@ export default function CreateProject() {
       formRef.current = {};
       router.push(`/project/${data[0].id}`);
       queryClient.invalidateQueries({ queryKey: ['projects'] });
+      showToast({
+        title: 'Project Created Successfully',
+        description: `Redirecting...`,
+        type: 'success',
+      });
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    mutation.mutate();
+    mutate();
   };
 
   return (
     <div className="flex justify-center items-center h-screen">
       <Card title="Create Project">
-        {mutation.isError && (
-          <p className="text-red-500 text-sm">
-            {(mutation.error as Error).message}
-          </p>
-        )}
-        {mutation.isSuccess && (
-          <p className="text-green-500 text-sm">
-            Project created successfully!
-          </p>
+        {isError && (
+          <p className="text-red-500 text-sm">{(error as Error).message}</p>
         )}
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -73,9 +73,9 @@ export default function CreateProject() {
           <button
             type="submit"
             className="w-full p-2 rounded-md bg-primary text-background font-semibold hover:bg-opacity-80 transition"
-            disabled={mutation.isPending}
+            disabled={isPending}
           >
-            {mutation.isPending ? 'Creating...' : 'Create Project'}
+            {isPending ? 'Creating...' : 'Create Project'}
           </button>
         </form>
       </Card>
