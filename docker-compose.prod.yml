@@ -13,6 +13,11 @@ services:
       - ./pgdata-prod:/var/lib/postgresql/data:rw
     networks:
       - nextjs-network-prod
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $POSTGRES_USER']
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   nextjs:
     build:
@@ -27,12 +32,10 @@ services:
       - NEXTAUTH_URL
       - AUTH_SECRET
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - nextjs-network-prod
-    command: >
-      sh -c "until nc -z postgres 5432; do echo Waiting for Postgres...; sleep 2; done;
-             npx drizzle-kit push --config=drizzle.config.ts --force && node server.js"
 
 networks:
   nextjs-network-prod:
