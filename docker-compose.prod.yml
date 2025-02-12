@@ -36,6 +36,8 @@ services:
         condition: service_healthy
     networks:
       - nextjs-network-prod
+    command: >
+      sh -c "npx drizzle-kit push --config=drizzle.config.ts --force && node server.js"
 
 networks:
   nextjs-network-prod:
