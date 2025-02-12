@@ -12,7 +12,7 @@ const TaskContainer = React.forwardRef<HTMLElement, Props>(
         ref={ref}
         id="task-container"
         className={clsx([
-          'h-full w-full max-h-none lg:h-[75vh] bg-background border border-border overflow-x-auto lg:overflow-y-scroll',
+          'h-full w-full max-h-none lg:h-[75vh] bg-background rounded-md border border-border overflow-x-auto lg:overflow-y-scroll',
           className,
         ])}
         {...rest}

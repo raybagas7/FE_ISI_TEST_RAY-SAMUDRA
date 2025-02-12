@@ -66,7 +66,9 @@ const AssignMember = () => {
               Team role user with this email not found
             </p>
           )}
-          {userData && <UserFound userData={userData} />}
+          {userData && (
+            <UserFound userData={userData} handleClose={handleClose} />
+          )}
         </div>
       </Dialog>
     </>

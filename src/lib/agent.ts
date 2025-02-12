@@ -9,8 +9,37 @@ import axios, { AxiosResponse } from 'axios';
 
 const api = axios.create({
   baseURL: '/api',
+  headers: {
+    'Content-Type': 'application/json',
+  },
   withCredentials: true,
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Normalize the error to always return an object with a `message` field
+    if (error.response) {
+      // Error response from server message
+      return Promise.reject({
+        status: error.response.status,
+        message: error.response.data.error || 'An error occurred',
+      });
+    }
+    if (error.request) {
+      // No response received
+      return Promise.reject({
+        status: null,
+        message: 'No response from server. Please try again.',
+      });
+    }
+    // Other errors
+    return Promise.reject({
+      status: null,
+      message: error.message || 'Unexpected error occurred',
+    });
+  }
+);
 
 const responseBody = <T>(response: AxiosResponse<T>): T => response.data;
 

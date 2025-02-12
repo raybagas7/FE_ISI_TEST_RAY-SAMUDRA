@@ -9,9 +9,9 @@ const Toaster = () => {
   const { toasts, removeToast } = useToast();
 
   const ToastVariantClass: Record<string, string> = {
-    success: 'border-primary',
-    error: 'border-destructive',
-    info: 'border-blue-500',
+    success: 'border-done bg-done text-white',
+    error: 'border-destructive bg-destructive text-white',
+    info: 'border-blue-500 bg-blue-500 text-white',
     default: 'border-border',
   };
 
@@ -21,27 +21,25 @@ const Toaster = () => {
         <Toast.Root
           key={toast.id}
           className={clsx([
-            `fixed bottom-4 right-4 w-[300px] rounded-lg shadow-lg p-4 bg-white border`,
+            `fixed bottom-4 right-4 w-[300px] rounded-lg shadow-lg p-4 border`,
             ,
             ToastVariantClass[toast.type || 'default'],
           ])}
-          duration={5000}
+          duration={3000}
           onOpenChange={(open) => {
             if (!open) removeToast(toast.id);
           }}
         >
           <div className="flex items-start justify-between">
             <div>
-              <Toast.Title className="font-bold text-gray-800">
-                {toast.title}
-              </Toast.Title>
+              <Toast.Title className="font-bold">{toast.title}</Toast.Title>
               {toast.description && (
-                <Toast.Description className="text-sm text-gray-600 mt-1">
+                <Toast.Description className="text-sm mt-1">
                   {toast.description}
                 </Toast.Description>
               )}
             </div>
-            <Toast.Close className="ml-2 text-gray-500 hover:text-gray-800">
+            <Toast.Close className="ml-2 text-primary hover:text-primary/80">
               <X className="h-4 w-4" />
             </Toast.Close>
           </div>

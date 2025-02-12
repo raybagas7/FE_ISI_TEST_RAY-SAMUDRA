@@ -69,10 +69,10 @@ const OnProgressTask = ({ projectId }: Props) => {
       }
     >
       <AnimatePresence initial={false}>
-        {onProgressTaskData?.tasks.map((task, index) => (
+        {onProgressTaskData?.tasks.map((task) => (
           <Task
             icon={<CircleDot className="size-5 text-onproggress" />}
-            key={index}
+            key={task.taskId}
             taskData={task}
             mutate={mutate}
           />

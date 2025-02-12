@@ -26,7 +26,7 @@ const Task = React.forwardRef<HTMLDivElement, Props>(
         initial={{ height: 0, opacity: 0 }}
         animate={{ height: 'auto', opacity: 1 }}
         exit={{ height: 0, opacity: 0 }}
-        transition={{ duration: 0.2, ease: 'easeOut' }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
         ref={ref}
         className={className}
         {...rest}
@@ -58,7 +58,7 @@ const Task = React.forwardRef<HTMLDivElement, Props>(
               scale: 0.98,
               filter: 'blur(4px)',
             }}
-            transition={{ duration: 0.15, ease: 'easeOut' }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
           >
             <div className="flex flex-col w-full h-full justify-between">
               <div className=" space-y-2">

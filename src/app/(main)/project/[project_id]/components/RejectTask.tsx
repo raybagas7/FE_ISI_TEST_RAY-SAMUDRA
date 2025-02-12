@@ -71,9 +71,9 @@ const RejectTask = ({ projectId }: Props) => {
       }
     >
       <AnimatePresence initial={false}>
-        {onProgressTaskData?.tasks.map((task, index) => (
+        {onProgressTaskData?.tasks.map((task) => (
           <Task
-            key={index}
+            key={task.taskId}
             taskData={task}
             mutate={mutate}
             icon={<Ban className="size-5 text-destructive" />}

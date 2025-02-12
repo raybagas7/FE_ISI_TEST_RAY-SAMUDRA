@@ -71,9 +71,9 @@ const DoneTask = ({ projectId }: Props) => {
       }
     >
       <AnimatePresence initial={false}>
-        {dontTaskData?.tasks.map((task, index) => (
+        {dontTaskData?.tasks.map((task) => (
           <Task
-            key={index}
+            key={task.taskId}
             taskData={task}
             mutate={mutate}
             icon={<CircleCheckBig className="size-5 text-done" />}

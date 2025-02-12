@@ -69,10 +69,10 @@ const NotStartedTask = ({ projectId }: Props) => {
       }
     >
       <AnimatePresence initial={false}>
-        {notStartedTaskData?.tasks.map((task, index) => (
+        {notStartedTaskData?.tasks.map((task) => (
           <Task
+            key={task.taskId}
             icon={<Circle className="size-4" />}
-            key={index}
             taskData={task}
             mutate={mutate}
           />

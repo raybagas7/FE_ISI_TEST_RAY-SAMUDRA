@@ -8,7 +8,7 @@ import TextArea from '@/components/ui/textarea';
 import ThinCard from '@/components/ui/thincard';
 import { ProjectMember } from '@/interface/dto';
 import agent from '@/lib/agent';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 import { CircleUserRound } from 'lucide-react';
@@ -41,6 +41,7 @@ const CreateTask = ({ projectMember }: Props) => {
   );
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isOpenAssign, setIsOpenAssign] = useState(false);
+  const queryClient = useQueryClient();
 
   const handleTaskData = (name: string, value: string | Date) => {
     setTaskData((prev) => ({
@@ -61,30 +62,30 @@ const CreateTask = ({ projectMember }: Props) => {
     setIsOpenAssign(false);
   };
 
-  const {
-    mutate: createTaskMutate,
-    isPending: createTaskPending,
-    data: createTaskData,
-  } = useMutation({
-    mutationFn: async () => {
-      return await agent.Task.postCreateTaks(taskData);
-    },
-    onSuccess: (data) => {
-      showToast({
-        title: 'Task Created',
-        description: `${data.title} task has been created successfully.`,
-        type: 'success',
-      });
-      setDialogOpen(false);
-      setTaskData({
-        title: '',
-        description: '',
-        projectId: project_id as string,
-        dueDate: undefined,
-        assignedTo: '',
-      });
-    },
-  });
+  const { mutate: createTaskMutate, isPending: createTaskPending } =
+    useMutation({
+      mutationFn: async () => {
+        return await agent.Task.postCreateTaks(taskData);
+      },
+      onSuccess: (data) => {
+        showToast({
+          title: 'Task Created',
+          description: `${data.title} task has been created successfully.`,
+          type: 'success',
+        });
+        setDialogOpen(false);
+        setTaskData({
+          title: '',
+          description: '',
+          projectId: project_id as string,
+          dueDate: undefined,
+          assignedTo: '',
+        });
+        queryClient.invalidateQueries({
+          queryKey: ['NOT_STARTED_TASK', project_id],
+        });
+      },
+    });
 
   return (
     <>
