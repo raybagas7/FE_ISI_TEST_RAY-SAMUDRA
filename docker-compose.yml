@@ -30,6 +30,9 @@ services:
       - postgres
     networks:
       - nextjs-network
+    command: >
+      sh -c "until nc -z postgres 5432; do echo Waiting for Postgres...; sleep 2; done;
+             npx drizzle-kit push --force && npm run dev"
 
 networks:
   nextjs-network:
