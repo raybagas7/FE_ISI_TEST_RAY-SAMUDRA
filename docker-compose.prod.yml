@@ -32,7 +32,7 @@ services:
       - nextjs-network-prod
     command: >
       sh -c "until nc -z postgres 5432; do echo Waiting for Postgres...; sleep 2; done;
-             npx drizzle-kit push --force && node server.js"
+             npx drizzle-kit push --config=drizzle.config.ts --force && node server.js"
 
 networks:
   nextjs-network-prod:
